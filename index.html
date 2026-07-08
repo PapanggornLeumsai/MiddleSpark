@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MiddleSpark</title>
+
+<!--
+  ============================================================
+  MIDDLESPARK — starter site
+  ------------------------------------------------------------
+  QUICK GUIDE TO CUSTOMIZING THIS FILE
+  1. Your written description lives in the <section class="about">
+     block — look for "WRITE YOUR EXPLANATION HERE" below.
+  2. Colors are defined once at the top of the CSS as variables
+     (--cream, --cream-deep, --brown-espresso, --brown-mid, --brown-gold)
+     — change them there and the whole site updates.
+  3. The background artwork is Michelangelo's "The Creation of
+     Adam" (public domain), loaded from Wikimedia Commons. Swap
+     the URL in the CSS/JS (search for FRESCO_IMAGE) if you'd
+     like to use a different image.
+  4. As you scroll through the "fresco" section, the two halves
+     of the painting slide toward each other so the hands meet —
+     that motion is driven by the small script at the bottom.
+  ============================================================
+-->
+
+<style>
+  :root{
+    --cream:        #f7f2e7;
+    --cream-deep:   #efe6d3;
+    --brown-espresso: #2e2118;
+    --brown-mid:    #6b4c34;
+    --brown-gold:   #a9793f;
+    --brown-line:   rgba(46,33,24,0.14);
+
+    --font-display: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Helvetica Neue", Arial, sans-serif;
+    --font-body:    -apple-system, BlinkMacSystemFont, "SF Pro Text", "Helvetica Neue", Arial, sans-serif;
+  }
+
+  *{ box-sizing: border-box; }
+  html{ scroll-behavior: smooth; }
+
+  body{
+    margin:0;
+    background: var(--cream);
+    color: var(--brown-espresso);
+    font-family: var(--font-body);
+    -webkit-font-smoothing: antialiased;
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    html{ scroll-behavior:auto; }
+    .panel, .glow, .fresco-caption{ transition:none !important; }
+  }
+
+  /* ---------- Fixed nav ---------- */
+  .nav{
+    position: fixed;
+    top:0; left:0; right:0;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding: 18px 0;
+    z-index: 50;
+    background: rgba(247,242,231,0);
+    backdrop-filter: blur(0px);
+    transition: background .4s ease, backdrop-filter .4s ease, box-shadow .4s ease;
+  }
+  .nav.scrolled{
+    background: rgba(247,242,231,0.85);
+    backdrop-filter: blur(10px);
+    box-shadow: 0 1px 0 var(--brown-line);
+  }
+  .nav-mark{
+    font-family: var(--font-display);
+    font-size: 15px;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    color: var(--brown-espresso);
+    opacity: 0;
+    transform: translateY(-6px);
+    transition: opacity .4s ease, transform .4s ease;
+  }
+  .nav.scrolled .nav-mark{ opacity:1; transform:translateY(0); }
+  .nav-mark span{ color: var(--brown-gold); font-weight: 500; }
+
+  /* ---------- Hero ---------- */
+  .hero{
+    min-height: 100vh;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    text-align:center;
+    padding: 32px;
+    position:relative;
+  }
+  .wordmark-big{
+    font-family: var(--font-display);
+    font-weight: 650;
+    font-size: clamp(4.2rem, 15vw, 10rem);
+    line-height: 0.92;
+    letter-spacing: -0.035em;
+    color: var(--brown-espresso);
+    margin:0;
+  }
+  .wordmark-small{
+    font-family: var(--font-display);
+    font-weight: 500;
+    font-size: clamp(0.85rem, 1.8vw, 1.15rem);
+    letter-spacing: 0.42em;
+    text-transform: uppercase;
+    color: var(--brown-gold);
+    margin: 10px 0 0 0.42em; /* offset to visually align with the letter-spacing */
+  }
+  .hero-tagline{
+    margin-top: 28px;
+    font-size: clamp(0.95rem, 1.6vw, 1.15rem);
+    color: var(--brown-mid);
+    max-width: 480px;
+    line-height: 1.6;
+  }
+  .scroll-cue{
+    position:absolute;
+    bottom: 36px;
+    font-size: 12px;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--brown-mid);
+    opacity: 0.7;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    gap:8px;
+  }
+  .scroll-cue::after{
+    content:"";
+    width:1px; height: 36px;
+    background: linear-gradient(var(--brown-gold), transparent);
+    animation: scrollpulse 1.8s ease-in-out infinite;
+  }
+  @keyframes scrollpulse{
+    0%,100%{ opacity: 0.25; }
+    50%{ opacity: 1; }
+  }
+
+  /* ---------- Fresco (Creation of Adam) scroll section ---------- */
+  .fresco-section{
+    position: relative;
+    height: 260vh; /* scroll distance that drives the hand animation */
+  }
+  .fresco-visual{
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    width: 100%;
+    overflow: hidden;
+    display:flex;
+    background: var(--brown-espresso);
+  }
+  .panel{
+    width: 50%;
+    height: 100%;
+    background-repeat: no-repeat;
+    background-size: 200% 100%;
+    filter: sepia(0.45) saturate(0.75) brightness(0.9) contrast(1.08);
+    will-change: transform;
+  }
+  .panel-left{
+    background-image: url("https://commons.wikimedia.org/wiki/Special:FilePath/Creaci%C3%B3n_de_Ad%C3%A1n.jpg");
+    background-position: left center;
+  }
+  .panel-right{
+    background-image: url("https://commons.wikimedia.org/wiki/Special:FilePath/Creaci%C3%B3n_de_Ad%C3%A1n.jpg");
+    background-position: right center;
+  }
+  /* warm overlay so the fresco reads within the cream/brown palette */
+  .fresco-tint{
+    position:absolute; inset:0;
+    background: linear-gradient(180deg, rgba(46,33,24,0.55) 0%, rgba(46,33,24,0.18) 30%, rgba(46,33,24,0.18) 70%, rgba(46,33,24,0.55) 100%);
+    pointer-events:none;
+  }
+  .glow{
+    position:absolute;
+    top: 44%;
+    left: 50%;
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    background: radial-gradient(circle, #f4d9a8 0%, var(--brown-gold) 55%, transparent 75%);
+    box-shadow: 0 0 40px 14px rgba(212,168,95,0.55);
+    transform: translate(-50%, -50%);
+    opacity: 0;
+    pointer-events:none;
+  }
+  .fresco-caption{
+    position:absolute;
+    bottom: 12%;
+    left: 50%;
+    transform: translate(-50%, 10px);
+    text-align:center;
+    color: var(--cream);
+    font-family: var(--font-display);
+    font-weight: 500;
+    letter-spacing: 0.06em;
+    font-size: clamp(1rem, 2.2vw, 1.4rem);
+    opacity: 0;
+    transition: opacity .5s ease, transform .5s ease;
+    text-shadow: 0 2px 18px rgba(0,0,0,0.5);
+  }
+  .fresco-caption.visible{
+    opacity: 1;
+    transform: translate(-50%, 0);
+  }
+
+  /* ---------- About / explanation section ---------- */
+  .about{
+    background: var(--cream-deep);
+    padding: 140px 24px;
+    display:flex;
+    justify-content:center;
+  }
+  .about-card{
+    max-width: 680px;
+    text-align:center;
+  }
+  .eyebrow{
+    display:inline-block;
+    font-size: 12px;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--brown-gold);
+    margin-bottom: 18px;
+  }
+  .about-card h2{
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: clamp(1.8rem, 4vw, 2.6rem);
+    letter-spacing: -0.01em;
+    margin: 0 0 24px 0;
+    color: var(--brown-espresso);
+  }
+
+  /* ✏️  WRITE YOUR EXPLANATION HERE  ✏️
+     Replace the paragraph text inside .about-text below with your
+     own words about what MiddleSpark is and why it exists. */
+  .about-text{
+    font-size: clamp(1rem, 1.6vw, 1.15rem);
+    line-height: 1.8;
+    color: var(--brown-mid);
+    margin: 0;
+  }
+
+  .divider{
+    width: 48px;
+    height: 2px;
+    background: var(--brown-gold);
+    margin: 36px auto 0;
+    border-radius: 2px;
+  }
+
+  /* ---------- Footer ---------- */
+  footer{
+    background: var(--brown-espresso);
+    color: var(--cream-deep);
+    text-align:center;
+    padding: 48px 24px;
+    font-size: 13px;
+    letter-spacing: 0.08em;
+  }
+  footer span{ color: var(--brown-gold); }
+</style>
+</head>
+<body>
+
+  <nav class="nav" id="nav">
+    <div class="nav-mark">Middle<span>Spark</span></div>
+  </nav>
+
+  <!-- ---------- Hero ---------- -->
+  <section class="hero">
+    <h1 class="wordmark-big">Middle</h1>
+    <div class="wordmark-small">Spark</div>
+
+    <!-- Optional tagline — edit or remove -->
+    <p class="hero-tagline">Where two ideas meet, something new comes to life.</p>
+
+    <div class="scroll-cue">Scroll</div>
+  </section>
+
+  <!-- ---------- Creation of Adam scroll effect ---------- -->
+  <section class="fresco-section" id="frescoSection">
+    <div class="fresco-visual">
+      <div class="panel panel-left" id="panelLeft"></div>
+      <div class="panel panel-right" id="panelRight"></div>
+      <div class="fresco-tint"></div>
+      <div class="glow" id="glow"></div>
+      <div class="fresco-caption" id="frescoCaption">The moment everything connects.</div>
+    </div>
+  </section>
+
+  <!-- ---------- About / explanation ---------- -->
+  <section class="about">
+    <div class="about-card">
+      <span class="eyebrow">About</span>
+      <h2>The Story Behind MiddleSpark</h2>
+      <p class="about-text">
+        Write your own explanation here — what MiddleSpark is, who it's for,
+        and why it exists. A sentence or two is plenty; keep it in your own
+        voice and it will carry the rest of the page.
+      </p>
+      <div class="divider"></div>
+    </div>
+  </section>
+
+  <footer>
+    © 2026 <span>MiddleSpark</span>. All rights reserved.
+  </footer>
+
+  <script>
+    const nav = document.getElementById('nav');
+    const section = document.getElementById('frescoSection');
+    const panelLeft = document.getElementById('panelLeft');
+    const panelRight = document.getElementById('panelRight');
+    const glow = document.getElementById('glow');
+    const caption = document.getElementById('frescoCaption');
+
+    const MAX_OFFSET = 220; // px each half travels before the hands meet
+    let ticking = false;
+
+    function update(){
+      // Nav background once the page has scrolled past the hero
+      nav.classList.toggle('scrolled', window.scrollY > window.innerHeight * 0.6);
+
+      // Progress (0 -> 1) through the fresco section
+      const rect = section.getBoundingClientRect();
+      const total = section.offsetHeight - window.innerHeight;
+      let progress = total > 0 ? (-rect.top) / total : 0;
+      progress = Math.min(1, Math.max(0, progress));
+
+      const offset = MAX_OFFSET * (1 - progress);
+      panelLeft.style.transform = `translateX(${-offset}px)`;
+      panelRight.style.transform = `translateX(${offset}px)`;
+
+      const glowStart = 0.82;
+      const glowOpacity = progress > glowStart ? (progress - glowStart) / (1 - glowStart) : 0;
+      glow.style.opacity = glowOpacity;
+
+      caption.classList.toggle('visible', progress > 0.9);
+
+      ticking = false;
+    }
+
+    function onScroll(){
+      if(!ticking){
+        requestAnimationFrame(update);
+        ticking = true;
+      }
+    }
+
+    window.addEventListener('scroll', onScroll, { passive: true });
+    window.addEventListener('resize', onScroll);
+    update();
+  </script>
+
+</body>
+</html>
