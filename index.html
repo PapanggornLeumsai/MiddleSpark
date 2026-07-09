@@ -4,8 +4,6 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>MiddleSpark</title>
-
-<!-- เพิ่มโค้ดดึงรูปภาพโลโก้มาแสดงผลบนแท็บเบราว์เซอร์ตรงนี้ -->
 <link rel="icon" type="image/png" href="favicon.png">
 
 <!--
@@ -18,10 +16,12 @@
   2. Colors are defined once at the top of the CSS as variables
      (--cream, --cream-deep, --brown-espresso, --brown-mid, --brown-gold)
      — change them there and the whole site updates.
-  3. The background artwork is Michelangelo's "The Creation of
-     Adam" (public domain), loaded from Wikimedia Commons. Swap
-     the URL in the CSS/JS (search for FRESCO_IMAGE) if you'd
-     like to use a different image.
+  3. The background artwork is your uploaded "hands.jpg" (the
+     Creation of Adam detail). It sits in the same folder as
+     this HTML file — keep them together when you upload the
+     site. Swap in a different image by replacing hands.jpg or
+     changing the two "background-image: url(...)" lines in the
+     .panel-left / .panel-right CSS rules.
   4. As you scroll through the "fresco" section, the two halves
      of the painting slide toward each other so the hands meet —
      that motion is driven by the small script at the bottom.
@@ -171,11 +171,11 @@
     will-change: transform;
   }
   .panel-left{
-    background-image: url("https://commons.wikimedia.org/wiki/Special:FilePath/Creaci%C3%B3n_de_Ad%C3%A1n.jpg");
+    background-image: url("hands.jpg");
     background-position: left center;
   }
   .panel-right{
-    background-image: url("https://commons.wikimedia.org/wiki/Special:FilePath/Creaci%C3%B3n_de_Ad%C3%A1n.jpg");
+    background-image: url("hands.jpg");
     background-position: right center;
   }
   /* warm overlay so the fresco reads within the cream/brown palette */
@@ -186,7 +186,7 @@
   }
   .glow{
     position:absolute;
-    top: 44%;
+    top: 50%;
     left: 50%;
     width: 14px;
     height: 14px;
