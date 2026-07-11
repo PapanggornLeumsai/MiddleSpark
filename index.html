@@ -201,6 +201,29 @@
   .panel-left .hand-img{ right:0; }   /* fingers point toward the center gap */
   .panel-right .hand-img{ left:0; }   /* fingers point toward the center gap */
 
+  /* Visible fallback shown only if a hand image genuinely fails to load —
+     helps confirm whether the problem is the file itself vs. display. */
+  .img-error-msg{
+    position:absolute;
+    top:50%; left:50%;
+    transform: translate(-50%, -50%);
+    text-align:center;
+    font-size: 13px;
+    line-height: 1.5;
+    color: var(--brown-mid);
+    background: rgba(255,255,255,0.6);
+    padding: 10px 16px;
+    border: 1px dashed var(--brown-line);
+    border-radius: 8px;
+    white-space: nowrap;
+  }
+  .concept-frame{ position: relative; }
+  .concept-frame .img-error-msg{
+    position:static;
+    transform:none;
+    display:inline-block;
+  }
+
   .glow{
     position:absolute;
     top: 50%;
@@ -386,11 +409,13 @@
     <div class="fresco-visual">
       <div class="panel panel-left" id="panelLeft">
         <div class="hand-backdrop"></div>
-        <img class="hand-img" src="left-hand.png" alt="Left hand reaching toward the center">
+        <img class="hand-img" src="left-hand.png?v=2" alt="Left hand reaching toward the center"
+             onerror="this.closest('.panel').classList.add('img-error'); this.insertAdjacentHTML('afterend','<div class=\'img-error-msg\'>ไม่พบไฟล์<br>left-hand.png</div>');">
       </div>
       <div class="panel panel-right" id="panelRight">
         <div class="hand-backdrop"></div>
-        <img class="hand-img" src="right-hand.png" alt="Right hand reaching toward the center">
+        <img class="hand-img" src="right-hand.png?v=2" alt="Right hand reaching toward the center"
+             onerror="this.closest('.panel').classList.add('img-error'); this.insertAdjacentHTML('afterend','<div class=\'img-error-msg\'>ไม่พบไฟล์<br>right-hand.png</div>');">
       </div>
       <div class="glow" id="glow"></div>
 
@@ -423,19 +448,22 @@
       <div class="concept-gallery">
         <div>
           <div class="concept-frame">
-            <img src="concept-1.png" alt="Concept mockup 1">
+            <img src="concept-1.png?v=2" alt="Concept mockup 1"
+                 onerror="this.style.display='none'; this.parentElement.insertAdjacentHTML('beforeend','<span class=\'img-error-msg\'>ไม่พบไฟล์<br>concept-1.png</span>');">
           </div>
           <p class="concept-caption">Concept 01</p>
         </div>
         <div>
           <div class="concept-frame">
-            <img src="concept-2.png" alt="Concept mockup 2">
+            <img src="concept-2.png?v=2" alt="Concept mockup 2"
+                 onerror="this.style.display='none'; this.parentElement.insertAdjacentHTML('beforeend','<span class=\'img-error-msg\'>ไม่พบไฟล์<br>concept-2.png</span>');">
           </div>
           <p class="concept-caption">Concept 02</p>
         </div>
         <div>
           <div class="concept-frame">
-            <img src="concept-3.png" alt="Concept mockup 3">
+            <img src="concept-3.png?v=2" alt="Concept mockup 3"
+                 onerror="this.style.display='none'; this.parentElement.insertAdjacentHTML('beforeend','<span class=\'img-error-msg\'>ไม่พบไฟล์<br>concept-3.png</span>');">
           </div>
           <p class="concept-caption">Concept 03</p>
         </div>
